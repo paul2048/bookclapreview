@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Book 👏 Review - {% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+    <header class="container">    
+        <div class="navbar">
+            <h1 id="site_title">
+                <a href="{{ url_for('index') }}">Book 👏 Review</a>
+            </h1>
+
+            {% if session["user_id"] %}
+                <form action="{{ url_for('signout') }}">
+                    <span class="ml-auto">
+                        {{ session["username"] }}
+                    </span>
+                    <button class="btn btn-outline-danger" id="btn_signout">
+                        Sign Out
+                    </button>
+                </form>
+            {% else %}
+                <!-- Trigger modals -->
+                <button class="btn btn-outline-primary ml-auto" data-toggle="modal" data-target="#register_modal">
+                    Register
+                </button>
+                <button class="btn btn-primary" id="btn_login" data-toggle="modal" data-target="#login_modal">
+                    Login
+                </button>
+
+                <!-- Register Modal -->
+                <div class="modal fade" id="register_modal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form action="{{ url_for('register') }}" method="POST" novalidate>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Register</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="inp_usern_register">Username:</label>
+                                        <input class="form-control" id="inp_usern_register" name="inp_usern_register" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inp_email_register">Email:</label>
+                                        <input class="form-control" id="inp_email_register" name="inp_email_register" type="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inp_passw_register">Password:</label>
+                                        <input class="form-control" id="inp_passw_register" name="inp_passw_register" type="password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inp_confirm_register">Confirm Password:</label>
+                                        <input class="form-control" id="inp_confirm_register" name="inp_confirm_register"
+                                            type="password">
+                                    </div>
+                                </div>
+                
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Register</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Login Modal -->
+                <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form action="{{ url_for('login') }}" method="POST" novalidate>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Login</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="inp_usern_login">Username:</label>
+                                        <input class="form-control" id="inp_usern_login" name="inp_usern_login" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inp_passw_login">Password:</label>
+                                        <input class="form-control" id="inp_passw" name="inp_passw_login" type="password">
+                                    </div>
+                                </div>
+                
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Login</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <ul class="navbar-nav">
+                <li class="nav-item {{ active_home }}">
+                    <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                </li>
+                <li class="nav-item {{ active_books }}">
+                    <a class="nav-link" href="{{ url_for('books') }}">Books</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% block main %}
+        {% endblock %}
+    </main>
+
+    <footer class="container">
+        <p class="bg-light text-center text-muted">© 2019 Book 👏 Review</p>
+    </footer>
+</body>
+
+</html>

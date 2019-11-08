@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    ERROR
+{% endblock %}
+
+{% block main %}
+    <h2 class="text-center" id="error_msg">
+        <span class="text-danger">ERROR</span>: {{ msg }}!
+    </h2>
+    <img class="mx-auto d-block" id="crab_rave_gif" src="../static/crab_rave.gif" alt="Crab Rave">
+{% endblock %}

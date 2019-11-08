@@ -1,0 +1,37 @@
+
+header, main, footer {
+    margin: 15px 0;
+}
+
+.navbar, .navbar .btn {
+    text-transform: uppercase;
+}
+
+#site_title {
+    user-select: none;
+
+    a {
+        color: var(--dark);
+        text-decoration: none;
+    }
+}
+
+#btn_login, #btn_signout {
+    margin-left: 10px;
+}
+
+#crab_rave_gif {
+    width: 75%;
+}
+
+.book-container {
+    margin-bottom: 40px;
+
+    ul {
+        font-size: 20px;
+    }
+}
+
+footer p {
+    padding: .5rem 1rem;
+}

@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Books
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-xs-12 col-md-2 col-lg-4"></div>
+        <div class="col-xs-12 col-md-8 col-lg-4 text-center">
+            <form method="POST" action="{{ url_for('books') }}">
+                <div class="form-group">
+                    <label for="book_query">Search for a book</label>
+                    <input class="form-control" id="book_query" name="book_query" type="text" autocomplete="off" autofocus>
+                </div>
+                
+                <div class="form-group">
+                    <input class="form-control btn btn-primary" type="submit" value="Search">
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-12 col-md-2 col-lg-4"></div>
+    </div>
+
+    {% if matched_books %}
+        <div class="row text-center">
+            {% for book in matched_books %}
+                <div class="col-12">
+                    <a href="{{ url_for('book', isbn=book['isbn']) }}">
+                        <h3>{{ book["title"] }}
+                            <span class="text-muted">by {{ book["author_name"] }}</span>
+                        </h3>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% elif matched_books == [] %}
+        <h2 class="text-center text-danger">No books were found!</h2>
+    {% elif book_details %}
+        <hr>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-6 book-container">
+                <h2>{{ book_details["title"] }}</h2>
+                <ul>
+                    <li><b>Author</b>: {{ book_details["author_name"] }}</li>
+                    <li><b>Publication Year</b>: {{ book_details["year"] }}</li>
+                    <li><b>ISBN</b>: {{ book_details["isbn"] }}</li>
+                </ul>
+            </div>
+
+            <div class="col-xs-12 col-md-6 book-container">
+                <h2>Goodreads Stats</h2>
+                <ul>
+                    <li><b>Rating Count</b>: {{ book_stats_goodreads["ratings_count"] }}</li>
+                    <li><b>Average Rating</b>: {{ book_stats_goodreads["average_rating"] }}</li>
+                </ul>
+            </div>
+
+            <div class="col-xs-12 col-md-12 col-lg-6 book-container">
+                <h2>Write Your Review</h2>
+                <form method="POST" action="{{ url_for('book', isbn=book_details[0]) }}">
+                    <div class="form-group">
+                        <label>Opinion:</label>
+                        <textarea class="form-control" name="opinion" placeholder="Your opinion..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Rating:</label>
+                        <input class="form-control" type="number" name="rating" placeholder="From 1 to 5" min="1" max="5" required>
+                    </div>
+                    <input class="form-control btn btn-success" type="submit" name="post_review" value="Post Review">
+                </form>
+            </div>
+
+            <div class="col-xs-12 col-md-12 col-lg-6 book-container">
+                {% if book_reviews["reviews_number"] == 0 %}
+                    <h2>Reviews</h2>
+                    <h4 class="text-danger">Nobody reviwed this book, but you can be the first to do it!</h4>
+                {% else %}
+                    <h2>Reviews ({{ book_reviews["reviews_number"] }} reviews, {{ book_reviews["reviews_average"] }}/5)</h2>
+                    {% if book_reviews %}
+                        {% for username, opinion, rating, timestamp in book_reviews["reviews"] %}
+                            <div>
+                                <h4>
+                                    {{ username }} •
+                                    <span class="small">{{ rating }}/5</span> •
+                                    <span class="small text-muted">{{ timestamp }}</span>
+                                </h4>
+                                <p>{{ opinion }}</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <h4 class="text-muted">No reviews</h4>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

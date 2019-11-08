@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-xs-12 col-xl-6 book-container">
+            <h2>Stats about reviews</h2>
+            <ul>
+                <li>
+                    <b>Number of Reviews</b>: 
+                    {{ reviews_stats["reviews_number"] }}
+                </li>
+                <li>
+                    <b>Average Rating</b>: 
+                    {{ reviews_stats["average_rating"] }}/5
+                </li>
+                <li>
+                    <b>The Most Reviewed Book</b>: 
+                    <a href="{{ url_for('book', isbn=reviews_stats['most_reviewed'][0]) }}"
+                        target="_blank">{{ reviews_stats["most_reviewed"][1] }}</a>
+                    ({{ reviews_stats["most_reviewed"][2] }} reviews)
+                </li>
+                <li>
+                    <b>The Best Rated Book</b>: 
+                    <a href="{{ url_for('book', isbn=reviews_stats['best_rated'][0]) }}"
+                        target="_blank">{{ reviews_stats["best_rated"][1] }}</a>
+                    ({{ reviews_stats["best_rated"][2] }})
+                </li>
+            </ul>
+        </div>
+        
+        <div class="col-xs-12 col-xl-6 book-container">
+            <h2>Latest reviews</h2>
+            {% for username, title, rating, timestamp, opinion, isbn in latest_reviews %}
+                <div>
+                    <h4>
+                        <a href="{{ url_for('book', isbn=isbn) }}">{{ title }}</a> • 
+                        {{ username }} • 
+                        <span class="small">{{ rating }}/5</span> • 
+                        <span class="small text-muted">{{ timestamp }}</span>
+                    </h4>
+                    <p>{{ opinion }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
